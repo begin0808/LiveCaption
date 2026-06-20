@@ -65,7 +65,7 @@
       <input type="password" id="deepseek-key" placeholder="sk-...">
     </div>
     <div class="section-title">字幕外觀設定</div>
-    <div class="input-group" style="display: flex; gap: 12px; margin-bottom: 16px;">
+    <div class="input-group" style="display: flex; gap: 12px; margin-bottom: 12px;">
       <div style="flex: 1;">
         <label for="bg-color">底框顏色</label>
         <input type="color" id="bg-color" value="#0a0f19">
@@ -74,6 +74,25 @@
         <label for="text-color">文字顏色</label>
         <input type="color" id="text-color" value="#ffffff">
       </div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 12px;">
+      <label for="font-size">字幕文字大小</label>
+      <select id="font-size" style="cursor: pointer;">
+        <option value="small">小 (Small)</option>
+        <option value="medium" selected>中 (Medium)</option>
+        <option value="large">大 (Large)</option>
+        <option value="xlarge">特大 (X-Large)</option>
+      </select>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 16px;">
+      <label for="history-lines">歷史字幕保留行數</label>
+      <select id="history-lines" style="cursor: pointer;">
+        <option value="0" selected>僅顯示最新單行 (0 行歷史)</option>
+        <option value="1">顯示最新 + 前 1 句 (1 行歷史)</option>
+        <option value="2">顯示最新 + 前 2 句 (2 行歷史)</option>
+      </select>
     </div>
 
     <div class="section-title">進階語音切分設定 (VAD)</div>

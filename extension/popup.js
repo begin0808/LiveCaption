@@ -13,11 +13,13 @@ const showBilingualInput = document.getElementById('show-bilingual');
 const sourceLangInput = document.getElementById('source-lang');
 const bgColorInput = document.getElementById('bg-color');
 const textColorInput = document.getElementById('text-color');
+const fontSizeInput = document.getElementById('font-size');
+const historyLinesInput = document.getElementById('history-lines');
 
 let isCapturing = false;
 
 // Load settings from storage
-chrome.storage.local.get(['ollamaUrl', 'modelName', 'deepseekKey', 'minSilence', 'maxSpeech', 'showBilingual', 'sourceLang', 'bgColor', 'textColor'], (result) => {
+chrome.storage.local.get(['ollamaUrl', 'modelName', 'deepseekKey', 'minSilence', 'maxSpeech', 'showBilingual', 'sourceLang', 'bgColor', 'textColor', 'fontSize', 'historyLines'], (result) => {
   if (result.ollamaUrl) ollamaUrlInput.value = result.ollamaUrl;
   if (result.modelName) modelNameInput.value = result.modelName;
   if (result.deepseekKey) deepseekKeyInput.value = result.deepseekKey;
@@ -33,6 +35,8 @@ chrome.storage.local.get(['ollamaUrl', 'modelName', 'deepseekKey', 'minSilence',
   if (result.sourceLang) sourceLangInput.value = result.sourceLang;
   if (result.bgColor) bgColorInput.value = result.bgColor;
   if (result.textColor) textColorInput.value = result.textColor;
+  if (result.fontSize) fontSizeInput.value = result.fontSize;
+  if (result.historyLines !== undefined) historyLinesInput.value = result.historyLines;
 });
 
 // Update settings in storage on input
@@ -46,7 +50,9 @@ const saveSettings = () => {
     showBilingual: showBilingualInput.checked,
     sourceLang: sourceLangInput.value,
     bgColor: bgColorInput.value,
-    textColor: textColorInput.value
+    textColor: textColorInput.value,
+    fontSize: fontSizeInput.value,
+    historyLines: parseInt(historyLinesInput.value)
   };
   chrome.storage.local.set(settings);
   
@@ -56,13 +62,19 @@ const saveSettings = () => {
     config: settings
   });
 
-  // Notify content script in the active tab to update colors in real-time
+  // Notify content script in the active tab to update colors, fonts, and history lines in real-time
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (tabs && tabs[0]) {
       chrome.tabs.sendMessage(tabs[0].id, {
         type: 'update-styles',
         bgColor: settings.bgColor,
-        textColor: settings.textColor
+        textColor: settings.textColor,
+        fontSize: settings.fontSize
+      }).catch(() => {});
+
+      chrome.tabs.sendMessage(tabs[0].id, {
+        type: 'update-history-lines',
+        historyLines: settings.historyLines
       }).catch(() => {});
     }
   });
@@ -75,6 +87,8 @@ showBilingualInput.addEventListener('change', saveSettings);
 sourceLangInput.addEventListener('change', saveSettings);
 bgColorInput.addEventListener('input', saveSettings);
 textColorInput.addEventListener('input', saveSettings);
+fontSizeInput.addEventListener('change', saveSettings);
+historyLinesInput.addEventListener('change', saveSettings);
 
 minSilenceInput.addEventListener('input', () => {
   minSilenceVal.textContent = minSilenceInput.value;
