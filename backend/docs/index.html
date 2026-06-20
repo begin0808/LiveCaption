@@ -945,8 +945,11 @@
               </svg>
             </div>
             <div class="config-item-text">
-              <h4>顯示雙語字幕開關</h4>
-              <p>勾選時會同時顯示「識別的原文」與「翻譯的中文」。<strong>取消勾選時，將隱藏原文，畫面僅顯示翻譯後的中文</strong>，簡潔大方。</p>
+              <h4>字幕顯示模式 (Subtitle Mode)</h4>
+              <p>提供三種模式彈性切換：<br>
+                1. <strong>雙語對照</strong>：同時顯示「識別出的原文」與「翻譯出的中文字幕」。<br>
+                2. <strong>僅顯示翻譯</strong>：隱藏原文，畫面只單獨顯示中文翻譯，視覺最為清爽。<br>
+                3. <strong>僅顯示原文</strong>：<strong>不顯示中文翻譯，只保留影片的原始語音字幕</strong>（例如觀看英文影片時作為純英文聽力輔助），此時原文會自動以主字型大小顯示。</p>
             </div>
           </div>
         </div>
@@ -954,12 +957,12 @@
         <div class="config-visual">
           <div class="mock-caption-window" id="demo-caption-container">
             <div class="mock-line history" id="demo-line-hist-2" style="display: none;">
-              <div class="mock-raw">In this tutorial, we will learn how it works.</div>
-              <div class="mock-zh">在這個教學中，我們將學習它是如何運作的。</div>
+              <div class="mock-raw" id="demo-line-hist-2-raw">In this tutorial, we will learn how it works.</div>
+              <div class="mock-zh" id="demo-line-hist-2-zh">在這個教學中，我們將學習它是如何運作的。</div>
             </div>
             <div class="mock-line history" id="demo-line-hist-1" style="display: none;">
-              <div class="mock-raw">Real-time local AI translation is very convenient.</div>
-              <div class="mock-zh">即時本機 AI 翻譯非常方便。</div>
+              <div class="mock-raw" id="demo-line-hist-1-raw">Real-time local AI translation is very convenient.</div>
+              <div class="mock-zh" id="demo-line-hist-1-zh">即時本機 AI 翻譯非常方便。</div>
             </div>
             <div class="mock-line">
               <div class="mock-raw" id="demo-line-latest-raw">You can adjust the font size dynamically using this panel.</div>
@@ -982,6 +985,13 @@
               <button class="demo-btn active" onclick="changeDemoHistory(0)">僅單行 (0)</button>
               <button class="demo-btn" onclick="changeDemoHistory(1)">+ 1 行歷史</button>
               <button class="demo-btn" onclick="changeDemoHistory(2)">+ 2 行歷史</button>
+            </div>
+
+            <div style="font-size: 13px; font-weight: 600; margin-bottom: 8px; text-align: center;">互動預覽：字幕模式切換</div>
+            <div class="interactive-controls">
+              <button class="demo-btn active" onclick="changeDemoMode('bilingual')">雙語對照</button>
+              <button class="demo-btn" onclick="changeDemoMode('translation')">僅中文</button>
+              <button class="demo-btn" onclick="changeDemoMode('raw')">僅原文</button>
             </div>
           </div>
         </div>
@@ -1112,6 +1122,70 @@
       } else if (lines === 2) {
         lineHist1.style.display = 'block';
         lineHist2.style.display = 'block';
+      }
+    }
+
+    function changeDemoMode(mode) {
+      // Sibling button reset
+      const buttons = event.target.parentElement.querySelectorAll('.demo-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      const latestZh = document.getElementById('demo-line-latest-zh');
+      const latestRaw = document.getElementById('demo-line-latest-raw');
+      const hist1Zh = document.getElementById('demo-line-hist-1-zh');
+      const hist1Raw = document.getElementById('demo-line-hist-1-raw');
+      const hist2Zh = document.getElementById('demo-line-hist-2-zh');
+      const hist2Raw = document.getElementById('demo-line-hist-2-raw');
+      
+      // Reset raw styles first
+      latestRaw.style.fontSize = '';
+      latestRaw.style.color = '';
+      latestRaw.style.fontWeight = '';
+      
+      [hist1Raw, hist2Raw].forEach(el => {
+        el.style.fontSize = '';
+        el.style.color = '';
+        el.style.fontWeight = '';
+      });
+      
+      if (mode === 'bilingual') {
+        latestZh.style.display = 'block';
+        latestRaw.style.display = 'block';
+        
+        hist1Zh.style.display = 'block';
+        hist1Raw.style.display = 'block';
+        
+        hist2Zh.style.display = 'block';
+        hist2Raw.style.display = 'block';
+      } else if (mode === 'translation') {
+        latestZh.style.display = 'block';
+        latestRaw.style.display = 'none';
+        
+        hist1Zh.style.display = 'block';
+        hist1Raw.style.display = 'none';
+        
+        hist2Zh.style.display = 'block';
+        hist2Raw.style.display = 'none';
+      } else if (mode === 'raw') {
+        // Show only raw text with primary styling
+        latestZh.style.display = 'none';
+        latestRaw.style.display = 'block';
+        latestRaw.style.fontSize = '18px';
+        latestRaw.style.color = '#ffffff';
+        latestRaw.style.fontWeight = '700';
+        
+        hist1Zh.style.display = 'none';
+        hist1Raw.style.display = 'block';
+        hist1Raw.style.fontSize = '17px';
+        hist1Raw.style.color = '#818cf8';
+        hist1Raw.style.fontWeight = '700';
+        
+        hist2Zh.style.display = 'none';
+        hist2Raw.style.display = 'block';
+        hist2Raw.style.fontSize = '17px';
+        hist2Raw.style.color = '#818cf8';
+        hist2Raw.style.fontWeight = '700';
       }
     }
 

@@ -54,11 +54,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           config: message.config
         });
         
-        const tabId = activeTabId || message.config.activeTabId;
+        const tabId = activeTabId;
         if (tabId) {
           chrome.tabs.sendMessage(tabId, {
-            type: 'toggle-bilingual',
-            showBilingual: message.config.showBilingual
+            type: 'update-subtitle-mode',
+            subtitleMode: message.config.subtitleMode
           }).catch(() => {});
         }
       }
@@ -83,12 +83,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       // Forward subtitle translation to content script in the active tab
       const tabId = activeTabId;
       if (tabId) {
-        chrome.storage.local.get(['showBilingual'], (result) => {
-          const showBilingual = result.showBilingual !== false;
+        chrome.storage.local.get(['subtitleMode', 'showBilingual'], (result) => {
+          let subtitleMode = result.subtitleMode;
+          if (!subtitleMode) {
+            subtitleMode = result.showBilingual !== false ? 'bilingual' : 'translation';
+          }
           chrome.tabs.sendMessage(tabId, {
             type: 'render-subtitle',
             data: message.data,
-            showBilingual: showBilingual
+            subtitleMode: subtitleMode
           }).catch(err => {
             console.warn("Failed to send subtitle to content script (tab might have been closed or reloaded):", err);
           });
@@ -138,11 +141,17 @@ async function startCapture(streamId, tabId) {
     }
     
     // 5. Tell Content Script to show/reset subtitles overlay
-    chrome.tabs.sendMessage(activeTabId, { 
-      type: 'show-subtitles',
-      showBilingual: showBilingual
-    }).catch(() => {
-      // Content script might not be loaded yet, ignoring
+    chrome.storage.local.get(['subtitleMode', 'showBilingual'], (res) => {
+      let subtitleMode = res.subtitleMode;
+      if (!subtitleMode) {
+        subtitleMode = res.showBilingual !== false ? 'bilingual' : 'translation';
+      }
+      chrome.tabs.sendMessage(activeTabId, { 
+        type: 'show-subtitles',
+        subtitleMode: subtitleMode
+      }).catch(() => {
+        // Content script might not be loaded yet, ignoring
+      });
     });
     
     // 6. Tell Offscreen Document to start recording and connect WebSocket

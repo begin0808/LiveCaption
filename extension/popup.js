@@ -9,7 +9,7 @@ const minSilenceInput = document.getElementById('min-silence');
 const minSilenceVal = document.getElementById('min-silence-val');
 const maxSpeechInput = document.getElementById('max-speech');
 const maxSpeechVal = document.getElementById('max-speech-val');
-const showBilingualInput = document.getElementById('show-bilingual');
+const subtitleModeInput = document.getElementById('subtitle-mode');
 const sourceLangInput = document.getElementById('source-lang');
 const bgColorInput = document.getElementById('bg-color');
 const textColorInput = document.getElementById('text-color');
@@ -19,7 +19,7 @@ const historyLinesInput = document.getElementById('history-lines');
 let isCapturing = false;
 
 // Load settings from storage
-chrome.storage.local.get(['ollamaUrl', 'modelName', 'deepseekKey', 'minSilence', 'maxSpeech', 'showBilingual', 'sourceLang', 'bgColor', 'textColor', 'fontSize', 'historyLines'], (result) => {
+chrome.storage.local.get(['ollamaUrl', 'modelName', 'deepseekKey', 'minSilence', 'maxSpeech', 'subtitleMode', 'showBilingual', 'sourceLang', 'bgColor', 'textColor', 'fontSize', 'historyLines'], (result) => {
   if (result.ollamaUrl) ollamaUrlInput.value = result.ollamaUrl;
   if (result.modelName) modelNameInput.value = result.modelName;
   if (result.deepseekKey) deepseekKeyInput.value = result.deepseekKey;
@@ -31,7 +31,13 @@ chrome.storage.local.get(['ollamaUrl', 'modelName', 'deepseekKey', 'minSilence',
     maxSpeechInput.value = result.maxSpeech;
     maxSpeechVal.textContent = result.maxSpeech;
   }
-  showBilingualInput.checked = result.showBilingual !== false; // Default to true
+  if (result.subtitleMode) {
+    subtitleModeInput.value = result.subtitleMode;
+  } else if (result.showBilingual !== undefined) {
+    subtitleModeInput.value = result.showBilingual ? 'bilingual' : 'translation';
+  } else {
+    subtitleModeInput.value = 'bilingual';
+  }
   if (result.sourceLang) sourceLangInput.value = result.sourceLang;
   if (result.bgColor) bgColorInput.value = result.bgColor;
   if (result.textColor) textColorInput.value = result.textColor;
@@ -47,7 +53,7 @@ const saveSettings = () => {
     deepseekKey: deepseekKeyInput.value,
     minSilence: parseFloat(minSilenceInput.value),
     maxSpeech: parseFloat(maxSpeechInput.value),
-    showBilingual: showBilingualInput.checked,
+    subtitleMode: subtitleModeInput.value,
     sourceLang: sourceLangInput.value,
     bgColor: bgColorInput.value,
     textColor: textColorInput.value,
@@ -76,6 +82,11 @@ const saveSettings = () => {
         type: 'update-history-lines',
         historyLines: settings.historyLines
       }).catch(() => {});
+
+      chrome.tabs.sendMessage(tabs[0].id, {
+        type: 'update-subtitle-mode',
+        subtitleMode: settings.subtitleMode
+      }).catch(() => {});
     }
   });
 };
@@ -83,7 +94,7 @@ const saveSettings = () => {
 ollamaUrlInput.addEventListener('input', saveSettings);
 modelNameInput.addEventListener('input', saveSettings);
 deepseekKeyInput.addEventListener('input', saveSettings);
-showBilingualInput.addEventListener('change', saveSettings);
+subtitleModeInput.addEventListener('change', saveSettings);
 sourceLangInput.addEventListener('change', saveSettings);
 bgColorInput.addEventListener('input', saveSettings);
 textColorInput.addEventListener('input', saveSettings);

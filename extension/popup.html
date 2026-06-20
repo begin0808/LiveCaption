@@ -31,9 +31,13 @@
       <button id="toggle-btn" class="btn btn-start">啟動即時字幕</button>
     </div>
     
-    <div class="input-group" style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-      <input type="checkbox" id="show-bilingual" checked style="width: auto; margin: 0; cursor: pointer;">
-      <label for="show-bilingual" style="margin: 0; cursor: pointer; font-size: 13px; font-weight: 600;">顯示雙語字幕 (中文 + 原文)</label>
+    <div class="input-group" style="margin-bottom: 16px;">
+      <label for="subtitle-mode">字幕顯示模式</label>
+      <select id="subtitle-mode" style="cursor: pointer;">
+        <option value="bilingual" selected>雙語對照 (中文 + 原文)</option>
+        <option value="translation">僅顯示翻譯 (僅中文)</option>
+        <option value="raw">僅顯示原文 (僅英文/日文)</option>
+      </select>
     </div>
 
     <div class="input-group" style="margin-bottom: 16px;">
