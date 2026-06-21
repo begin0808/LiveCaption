@@ -793,6 +793,30 @@
         flex: 1 1 100%;
       }
     }
+
+    #doc-lang-select {
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      outline: none;
+      transition: var(--transition-smooth);
+      font-family: var(--font-body);
+    }
+    #doc-lang-select:hover, #doc-lang-select:focus {
+      border-color: var(--accent-color);
+      color: var(--text-primary);
+      background: #ffffff;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .lang-select-item {
+      display: flex;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
@@ -819,11 +843,20 @@
       </div>
       <nav>
         <ul>
-          <li><a href="#scenarios">應用場景</a></li>
-          <li><a href="#features">系統特色</a></li>
-          <li><a href="#steps">安裝與啟動</a></li>
-          <li><a href="#config">設定說明</a></li>
-          <li><a href="#troubleshooting">常見問題</a></li>
+          <li><a href="#scenarios" data-i18n="nav-scenarios">應用場景</a></li>
+          <li><a href="#features" data-i18n="nav-features">系統特色</a></li>
+          <li><a href="#steps" data-i18n="nav-steps">安裝與啟動</a></li>
+          <li><a href="#config" data-i18n="nav-config">設定說明</a></li>
+          <li><a href="#troubleshooting" data-i18n="nav-troubleshooting">常見問題</a></li>
+          <li class="lang-select-item">
+            <select id="doc-lang-select" aria-label="Language Selector">
+              <option value="zh-TW">繁體中文</option>
+              <option value="zh-CN">简体中文</option>
+              <option value="en">English</option>
+              <option value="ja">日本語</option>
+              <option value="ko">한국어</option>
+            </select>
+          </li>
         </ul>
       </nav>
     </div>
@@ -832,12 +865,12 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="container">
-      <div class="hero-badge">OFFLINE-FIRST REAL-TIME TRANSLATION</div>
-      <h1>精準、即時的<span>網頁影音雙語字幕</span></h1>
-      <p>Studio0808 LiveCaption 是一套專為瀏覽器影片設計的即時語音識別與雙語字幕翻譯系統。完全在您的本機電腦執行，擁有 100% 的隱私保護與極低延遲的速度。</p>
+      <div class="hero-badge" data-i18n="hero-badge">OFFLINE-FIRST REAL-TIME TRANSLATION</div>
+      <h1 data-i18n="hero-title">精準、即時的<span>網頁影音雙語字幕</span></h1>
+      <p data-i18n="hero-desc">Studio0808 LiveCaption 是一套專為瀏覽器影片設計的即時語音識別與雙語字幕翻譯系統。完全在您的本機電腦執行，擁有 100% 的隱私保護與極低延遲的速度。</p>
       <div class="hero-buttons">
-        <a href="#steps" class="btn btn-primary">開始使用</a>
-        <a href="#scenarios" class="btn btn-secondary">應用場景</a>
+        <a href="#steps" class="btn btn-primary" data-i18n="btn-start">開始使用</a>
+        <a href="#scenarios" class="btn btn-secondary" data-i18n="btn-scenarios">應用場景</a>
       </div>
     </div>
   </section>
@@ -846,8 +879,8 @@
   <section id="scenarios" class="scenarios-section">
     <div class="container">
       <div class="section-title-wrapper">
-        <h2 class="section-title">多元應用場景</h2>
-        <p class="section-subtitle">完美融入您的工作、學習與娛樂生活</p>
+        <h2 class="section-title" data-i18n="title-scenarios">多元應用場景</h2>
+        <p class="section-subtitle" data-i18n="sub-scenarios">完美融入您的工作、學習與娛樂生活</p>
       </div>
       
       <div class="scenarios-grid">
@@ -859,8 +892,8 @@
               <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
             </svg>
           </div>
-          <h3>線上課程與學術講座</h3>
-          <p>觀看 Coursera、Udemy、YouTube 上的無字幕國外教學影片時，提供即時繁中翻譯，幫助快速掌握關鍵字與專業內容。</p>
+          <h3 data-i18n="s1-title">線上課程與學術講座</h3>
+          <p data-i18n="s1-desc">觀看 Coursera、Udemy、YouTube 上的無字幕國外教學影片時，提供即時繁中翻譯，幫助快速掌握關鍵字與專業內容。</p>
         </div>
 
         <!-- Scenario 2 -->
@@ -870,8 +903,8 @@
               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
             </svg>
           </div>
-          <h3>聽障輔助與無障礙學習</h3>
-          <p>幫助聽障或聽力不便的學生，在觀看無字幕的線上教學影片、參與視訊課程時，將即時語音轉化為雙語文字，消弭學習阻礙。</p>
+          <h3 data-i18n="s2-title">聽障輔助與無障礙學習</h3>
+          <p data-i18n="s2-desc">幫助聽障或聽力不便的學生，在觀看無字幕的線上教學影片、參與視訊課程時，將即時語音轉化為雙語文字，消弭學習阻礙。</p>
         </div>
 
         <!-- Scenario 3 -->
@@ -882,8 +915,8 @@
               <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
             </svg>
           </div>
-          <h3>外語聽力與口說練習</h3>
-          <p>切換為「僅顯示原文」模式，只顯示純英文/日文字幕進行聽力盲聽訓練，遇到聽不懂的段落隨時切換回雙語對照，效果加倍。</p>
+          <h3 data-i18n="s3-title">外語聽力與口說練習</h3>
+          <p data-i18n="s3-desc">切換為「僅顯示原文」模式，只顯示純英文/日文字幕進行聽力盲聽訓練，遇到聽不懂的段落隨時切換回雙語對照，效果加倍。</p>
         </div>
 
         <!-- Scenario 4 -->
@@ -900,8 +933,8 @@
               <line x1="17" y1="7" x2="22" y2="7"/>
             </svg>
           </div>
-          <h3>國外影音與影劇追星</h3>
-          <p>支援無字幕的國外最新串流影音（如直播、海外新聞等），提供本機極速翻譯，讓您無痛看懂第一手生肉影片。</p>
+          <h3 data-i18n="s4-title">全球即時影音與直播</h3>
+          <p data-i18n="s4-desc">支援無字幕的國外最新串流影音（如現場直播、海外新聞及即時節目等），提供本機極速語音識別與翻譯，讓您即時掌握第一手國外資訊。</p>
         </div>
 
         <!-- Scenario 5 -->
@@ -914,8 +947,8 @@
               <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
           </div>
-          <h3>網頁視訊會議逐字稿</h3>
-          <p>在瀏覽器進行 Google Meet、Teams 跨國會議時，即時把發言渲染成雙語字幕，並自動在背景存檔為完整的 Markdown 會議紀錄。</p>
+          <h3 data-i18n="s5-title">網頁視訊會議逐字稿</h3>
+          <p data-i18n="s5-desc">在瀏覽器進行 Google Meet、Teams 跨國會議時，即時把發言渲染成雙語字幕，並自動在背景存檔為完整的 Markdown 會議紀錄。</p>
         </div>
 
         <!-- Scenario 6 -->
@@ -1214,9 +1247,9 @@
         <div class="faq-card">
           <h4>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-            問題 1：後端啟動失敗，提示「找不到 VAD 模型 ...」？
+            <span data-i18n="faq1-title">問題 1：後端啟動失敗，提示「找不到 VAD 模型 ...」？</span>
           </h4>
-          <p>
+          <p data-i18n="faq1-desc">
             後端引擎在進行語音切分時需要 Silero VAD 模型（<code>silero_vad.onnx</code>）。<br>
             <strong>解決方法：</strong>請先在後端程式碼根目錄（即 <code>backend/</code> 資料夾）中，在安裝好環境後執行 <strong><code>python download_models.py</code></strong> 進行自動下載，確保模型檔案下載完整。
           </p>
@@ -1226,12 +1259,12 @@
         <div class="faq-card">
           <h4>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-            問題 2：外掛顯示「語音系統已連線」，但是播放影片時完全沒有出字幕？
+            <span data-i18n="faq2-title">問題 2：外掛顯示「語音系統已連線」，但是播放影片時完全沒有出字幕？</span>
           </h4>
-          <p>
+          <p data-i18n="faq2-desc">
             有幾種可能性需要排除：<br>
             1. <strong>影片是否靜音：</strong>系統擷取的是分頁播放的音訊，如果影片靜音或聲音太小，VAD 無法偵測到人聲，就不會產生字幕。<br>
-            2. <strong>模型正在加載：</strong>首次辨識時，後端需要讀取載入 SenseVoice 辨識模型，可能會花費 3-5 秒，可以等待一下再測試。<br>
+            2. <strong>模型正在載入：</strong>首次辨識時，後端需要讀取載入 SenseVoice 辨識模型，可能會花費 3-5 秒，可以等待一下再測試。<br>
             3. <strong>後端沒有開啟：</strong>請確保啟動後端服務的命令提示字元 (CMD) 視窗一直保持開啟，且沒有拋出 Error。
           </p>
         </div>
@@ -1240,13 +1273,13 @@
         <div class="faq-card">
           <h4>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-            問題 3：彈出 Cannot capture a tab with an active stream 錯誤，或是啟動失敗？
+            <span data-i18n="faq3-title">問題 3：彈出 Cannot capture a tab with an active stream 錯誤，或是啟動失敗？</span>
           </h4>
-          <p>
-            這是因為 Chrome 判定該影片分頁已經有音訊擷取程序正在運行。這通常是因為外掛背景腳本自動休眠重啟、狀態不同步導致。<br>
+          <p data-i18n="faq3-desc">
+            這是因為 Chrome 判定該影片分頁已經有音訊擷取行程正在執行。這通常是因為外掛背景腳本自動休眠重啟、狀態不同步導致。<br>
             <strong>解決方法：</strong><br>
             1. <strong>重新整理影片網頁：</strong>直接按下 <code>F5</code> 重新整理播放影片的網頁，這會強制釋放該分頁被佔用的所有音軌。<br>
-            2. <strong>重載擴充功能：</strong>在 <code>chrome://extensions/</code> 中點選 Studio0808 LiveCaption 的「重新整理」圖示，徹底重啟背景程序即可。
+            2. <strong>重載擴充功能：</strong>在 <code>chrome://extensions/</code> 中點選 Studio0808 LiveCaption 的「重新整理」圖示，徹底重啟背景程式即可。
           </p>
         </div>
 
@@ -1254,50 +1287,50 @@
         <div class="faq-card">
           <h4>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-            問題 4：如何申請與配置 DeepSeek 雲端翻譯金鑰 (API Key)？
+            <span data-i18n="faq4-title">問題 4：如何申請與配置 DeepSeek 雲端翻譯金鑰 (API Key)？</span>
           </h4>
-          <p>
+          <p data-i18n="faq4-desc">
             使用 DeepSeek 雲端翻譯可以極低成本取得極精準的雙語對照。請依以下步驟申請：
+            <ol>
+              <li><strong>註冊/登入開發者平台</strong>：造訪 <a href="https://platform.deepseek.com/" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">DeepSeek 開放平台</a>。您可以透過手機註冊或 Google 帳號快速登入。</li>
+              <li><strong>帳戶充值 (Top Up)</strong>：進入後台後，點擊左側選單的 <strong>"Top up"</strong>。其 Token 價格極低，充值最低金額（如 1~5 美元）即可供日常影片翻譯使用極長時間。</li>
+              <li><strong>建立金鑰 (Create API Key)</strong>：點擊左側選單的 <strong>"API Keys"</strong>，然後點擊 <strong>"Create new API key"</strong>。輸入金鑰名稱並點擊確定。</li>
+              <li><strong>複製金鑰</strong>：複製系統產生的以 <code>sk-</code> 開頭的金鑰。基於安全限制，該金鑰只會顯示一次，請務必當下複製保存。</li>
+              <li><strong>配置到外掛</strong>：點擊 Chrome 的 LiveCaption 外掛圖示，在「DeepSeek API 金鑰」欄位貼上剛才複製的金鑰，即可自動啟用雲端翻譯。</li>
+            </ol>
           </p>
-          <ol>
-            <li><strong>註冊/登入開發者平台</strong>：造訪 <a href="https://platform.deepseek.com/" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">DeepSeek 開放平台</a>。您可以透過手機註冊或 Google 帳號快速登入。</li>
-            <li><strong>帳戶充值 (Top Up)</strong>：進入後台後，點擊左側選單的 <strong>"Top up"</strong>。其 Token 價格極低，充值最低金額（如 1~5 美元）即可供日常影片翻譯使用極長時間。</li>
-            <li><strong>建立金鑰 (Create API Key)</strong>：點擊左側選單的 <strong>"API Keys"</strong>，然後點擊 <strong>"Create new API key"</strong>。輸入金鑰名稱並點擊確定。</li>
-            <li><strong>複製金鑰</strong>：複製系統產生的以 <code>sk-</code> 開頭的金鑰。基於安全限制，該金鑰只會顯示一次，請務必當下複製保存。</li>
-            <li><strong>配置到外掛</strong>：點擊 Chrome 的 LiveCaption 外掛圖示，在「DeepSeek API 金鑰」欄位貼上剛才複製的金鑰，即可自動啟用雲端翻譯。</li>
-          </ol>
         </div>
 
         <!-- Q5 (Mac Support) -->
         <div class="faq-card">
           <h4>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-            問題 5：Mac 電腦也可以使用嗎？
+            <span data-i18n="faq5-title">問題 5：Mac 電腦也可以使用嗎？</span>
           </h4>
-          <p>
+          <p data-i18n="faq5-desc">
             <strong>可以！Mac 電腦完全可以使用，但啟動方式與 Windows 略有不同：</strong>
+            <ol>
+              <li><strong>瀏覽器外掛 (Chrome Extension)</strong>：100% 支援。外掛的安裝與使用方式在 Mac Chrome 瀏覽器上與 Windows 完全相同。</li>
+              <li><strong>後端伺服器 (Python Backend)</strong>：發布包中的 <code>.exe</code> 與 <code>.bat</code> 為 Windows 專用。Mac 使用者若要使用，需先安裝 Python 環境，並於終端機執行 <code>pip install -r requirements.txt</code> 安裝依賴，再執行 <code>python main.py</code> 啟動。</li>
+              <li><strong>處理器晶片相容性</strong>：辨識核心對 Mac 的 Intel 晶片與 Apple Silicon (M1/M2/M3) 晶片皆有原生高效能優化，可流暢執行。</li>
+            </ol>
           </p>
-          <ol>
-            <li><strong>瀏覽器外掛 (Chrome Extension)</strong>：100% 支援。外掛的安裝與使用方式在 Mac Chrome 瀏覽器上與 Windows 完全相同。</li>
-            <li><strong>後端伺服器 (Python Backend)</strong>：發布包中的 <code>.exe</code> 與 <code>.bat</code> 為 Windows 專用。Mac 使用者若要使用，需先安裝 Python 環境，並於終端機執行 <code>pip install -r requirements.txt</code> 安裝依賴，再執行 <code>python main.py</code> 啟動。</li>
-            <li><strong>處理器晶片相容性</strong>：辨識核心對 Mac 的 Intel 晶片與 Apple Silicon (M1/M2/M3) 晶片皆有原生高效能優化，可流暢執行。</li>
-          </ol>
         </div>
 
         <!-- Q6 (Roadmap Memo) -->
         <div class="faq-card">
           <h4>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-            備忘與未來規劃：開發方案 B「桌面獨立程式」版本？
+            <span data-i18n="faq6-title">備忘與未來規劃：開發方案 B「桌面獨立程式」版本？</span>
           </h4>
-          <p>
+          <p data-i18n="faq6-desc">
             目前我們採用「Chrome 外掛 (擷取與顯示) + 本機 Python (AI 大腦)」的雙軌架構。若未來您希望脫離 Chrome 瀏覽器、為 PotPlayer 等本機軟體或 Teams/Zoom 視訊程式提供即時字幕，可以規畫另外開發為獨立桌面程式：
+            <ol>
+              <li><strong>系統音訊錄製 (WASAPI Loopback)</strong>：捨棄瀏覽器專用 API，改在 Python 中使用 Windows WASAPI 環回機制錄音，這樣便能直接擷取電腦喇叭播放的所有聲音。</li>
+              <li><strong>獨立桌面懸浮視窗 (PyQt6 / PySide6)</strong>：在 Python 建立半透明、無邊框、永遠置頂 (Always on Top) 的桌面 UI 字幕視窗。</li>
+              <li><strong>特性評估</strong>：此方案將可支援全電腦所有音軌，但需要防範其他系統通知雜音（例如通訊軟體叮咚聲）對辨識的干擾。本項目將作爲未來獨立產品另外開發。</li>
+            </ol>
           </p>
-          <ol>
-            <li><strong>系統音訊錄製 (WASAPI Loopback)</strong>：捨棄瀏覽器專用 API，改在 Python 中使用 Windows WASAPI 環回機制錄音，這樣便能直接擷取電腦喇叭播放的所有聲音。</li>
-            <li><strong>獨立桌面懸浮視窗 (PyQt6 / PySide6)</strong>：在 Python 建立半透明、無邊框、永遠置頂 (Always on Top) 的桌面 UI 字幕視窗。</li>
-            <li><strong>特性評估</strong>：此方案將可支援全電腦所有音軌，但需要防範其他系統通知雜音（例如通訊軟體叮咚聲）對辨識的干擾。本項目將作爲未來獨立產品另外開發。</li>
-          </ol>
         </div>
       </div>
     </div>
