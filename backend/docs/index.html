@@ -1383,6 +1383,20 @@
             2. <strong>Cannot capture a tab with an active stream 錯誤 (紅色)</strong>：這通常發生在**播放影片時重新載入（Reload）擴充功能**。因為 Chrome 尚未釋放前一次的擷取連線，導致新連線衝突。<strong>解決方法：</strong>請按下 <code>F5</code> 重新整理播放影片的網頁以強制釋放音訊，並在錯誤頁面點選右上角的「全部清除」即可恢復正常。
           </p>
         </div>
+
+        <!-- Q8 (VAD Segmenting/Missing Initial Word) -->
+        <div class="faq-card">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span data-i18n="faq8-title">問題 8：辨識中文影片時，為何每句的第一個字或發音較輕的起句字常常沒有跑出來？</span>
+          </h4>
+          <p data-i18n="faq8-desc">
+            這是由語音切分（VAD）的偵測反應時間所致，您可以透過調整 VAD 參數獲得顯著改善：<br>
+            1. **調整「斷句靜音時間」**：建議調高至 <strong><code>0.8</code> 秒</strong>。若設太短（如 0.5s），講話過程的微小換氣停頓會被判定為斷句，導致新句子開頭字容易因 VAD 重新偵測而被切掉。<br>
+            2. **調整「單句最長上限」**：建議調高至 <strong><code>8.0</code> 秒以上</strong>。若設太短，系統會頻繁強制截斷長句，容易切碎邊界字。<br>
+            3. **後端內建優化**：最新版後端已將說話判定門檻（threshold）調降至 <code>0.4</code>，並將最小語音長度由 <code>0.25s</code> 縮短至 <code>0.15s</code>，極大提高了開頭輕發音字的保留率。
+          </p>
+        </div>
       </div>
     </div>
   </section>
