@@ -71,7 +71,7 @@ def main():
         
     # 5. 建立便利的「啟動服務.bat」批次檔
     print("正在建立一鍵啟動批次檔...")
-    bat_path = os.path.join(DIST_DIR, "點我啟動後端服務.bat")
+    bat_path = os.path.join(DIST_DIR, "點我啟動【即時字幕】後端服務.bat")
     bat_content = """@echo off
 chcp 65001 > nul
 title Studio0808 LiveCaption Server
@@ -90,7 +90,7 @@ pause
     print("\n=== [SUCCESS] 打包完成！ ===")
     print(f"打包成品路徑：{DIST_DIR}")
     print("您可以直接將該資料夾壓縮為 ZIP 檔分享給他人使用！")
-    print("使用者只需解壓縮後，點選「點我啟動後端服務.bat」即可啟動伺服器，無需安裝 Python 或執行指令！")
+    print("使用者只需解壓縮後，點選「點我啟動【即時字幕】後端服務.bat」即可啟動伺服器，無需安裝 Python 或執行指令！")
 
 if __name__ == "__main__":
     main()
