@@ -80,6 +80,17 @@ body {
   letter-spacing: 1px;
 }
 
+.lang-notice {
+  font-size: 10px;
+  color: #b45309;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 6px;
+  padding: 5px 8px;
+  margin: 8px 0 0 0;
+  line-height: 1.4;
+}
+
 .status-container {
   display: flex;
   flex-direction: column;

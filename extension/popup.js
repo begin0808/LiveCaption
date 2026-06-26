@@ -22,6 +22,7 @@ let isCapturing = false;
 const i18n = {
   'zh-TW': {
     subtitleDesc: '即時影片語音翻譯字幕',
+    langNotice: '⚠️ 語音辨識僅支援：中文（含粵語）、英語、日語、韓語',
     labelConnection: '連線狀態:',
     labelCapture: '擷取狀態:',
     statusDisconnected: '未連線',
@@ -64,6 +65,7 @@ const i18n = {
   },
   'zh-CN': {
     subtitleDesc: '实时影片语音翻译字幕',
+    langNotice: '⚠️ 语音识别仅支持：中文（含粤语）、英语、日语、韩语',
     labelConnection: '连接状态:',
     labelCapture: '捕获状态:',
     statusDisconnected: '未连接',
@@ -106,6 +108,7 @@ const i18n = {
   },
   'en': {
     subtitleDesc: 'Real-time Video Speech Translation Subtitles',
+    langNotice: '⚠️ Speech recognition supports: Chinese (incl. Cantonese), English, Japanese, Korean only',
     labelConnection: 'Connection:',
     labelCapture: 'Capture:',
     statusDisconnected: 'Disconnected',
@@ -148,6 +151,7 @@ const i18n = {
   },
   'ja': {
     subtitleDesc: 'リアルタイムのビデオ音声翻訳字幕',
+    langNotice: '⚠️ 音声認識対応言語：中国語（広東語含む）、英語、日本語、韓国語のみ',
     labelConnection: '接続状態:',
     labelCapture: 'キャプチャ状態:',
     statusDisconnected: '未接続',
@@ -190,6 +194,7 @@ const i18n = {
   },
   'ko': {
     subtitleDesc: '실시간 비디오 음성 번역 자막',
+    langNotice: '⚠️ 음성 인식 지원: 중국어(광동어 포함), 영어, 일본어, 한국어만 지원',
     labelConnection: '연결 상태:',
     labelCapture: '캡처 상태:',
     statusDisconnected: '미연결',
@@ -253,6 +258,7 @@ function updateVadLabels(lang) {
 
 function applyLanguage(lang) {
   document.getElementById('subtitle-desc').textContent = getTranslation(lang, 'subtitleDesc');
+  document.getElementById('lang-notice').textContent = getTranslation(lang, 'langNotice');
   
   const labels = document.querySelectorAll('.status-item .label');
   if (labels.length >= 2) {

@@ -1,4 +1,4 @@
-# Studio0808 LiveCaption - Real-Time Web Video Speech Translation & Bilingual Subtitles
+# Studio0808 LiveCaption - Real-Time Web Video Speech Translation & Bilingual Subtitles (Chinese / English / Japanese / Korean / Cantonese)
 
 [English](README_EN.md) | [繁體中文版](README.md)
 
@@ -10,11 +10,13 @@
 
 Studio0808 LiveCaption is a real-time speech recognition and bilingual subtitle translation system designed specifically for browser videos. Running entirely on your local machine, it offers 100% privacy protection and ultra-low latency.
 
+> ⚠️ **Supported Speech Languages**: This system uses Alibaba's open-source **SenseVoice-Small** speech model, which currently supports speech recognition for **Chinese (including Cantonese), English, Japanese, and Korean** only. European languages such as Spanish, French, German, and Russian are **not** supported for speech recognition at this time.
+
 Ideal for online learning, accessibility/hearing-assist, foreign language listening training, global live streams, and video conference transcripts.
 
 ---
 
-## 💡 Technical Highlights & Architecture (Why it's NOT reinventing the wheel)
+## 💡 Technical Highlights & Architecture
 
 This system uses **real-time sentence-level streaming detection & translation technology**, rather than simple post-processed file transcribing or static track extraction:
 
