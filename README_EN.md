@@ -31,6 +31,7 @@ This system uses **real-time sentence-level streaming detection & translation te
    - Supports a fully offline stack: ASR powered by local **Sherpa-ONNX**, and translation powered by local **Ollama** (Qwen 2.5 3B recommended). All audio processing and text generation remain strictly on your local machine.
 4. **Hot-Swappable Translation Engines**:
    - Supports OpenCC for local Traditional/Simplified Chinese conversion, local Ollama offline translation, online DeepSeek API, and a free Google Translate API fallback.
+   - **⚠️ Please note**: The AI models bundled with the release package (SenseVoice-Small, Silero VAD) handle **speech recognition only**. Among the translation engines, **Ollama must be installed separately** and **DeepSeek requires your own paid API key**. If neither is configured, the system automatically uses free Google Translate and captions still work normally (see "Translation Engine Setup" below).
 
 ---
 
@@ -47,7 +48,7 @@ If you do not want to configure the Python development environment, you can down
 
 *   **Ultra-Low Latency Tab Audio Capture**: Uses a unique Chrome Extension tab audio loopback mechanism to precisely capture audio tracks playing in the active tab without affecting other system audio or recording devices.
 *   **Offline Local AI Speech Recognition**: Powered by the Sherpa-ONNX architecture and Alibaba's open-source **SenseVoice-Small** speech model. Supports Chinese, English, Japanese, Korean, and Cantonese with extremely fast local decoding.
-*   **Flexible Translation Engines**: Supports the local **Ollama** framework (Qwen 2.5 3B recommended) for fully offline translation, as well as the online **DeepSeek** Cloud API for near-human quality translation.
+*   **Flexible Translation Engines**: Ships with a free Google Translate fallback that works out of the box; you may optionally install the local **Ollama** framework (Qwen 2.5 3B recommended) for fully offline translation, or supply an online **DeepSeek** Cloud API key for near-human quality translation. (Both Ollama and DeepSeek require separate installation or registration.)
 *   **Premium Glassmorphism Subtitle Window**: An elegant semi-transparent floating window overlay supporting custom font sizes and colors, mouse click-through, drag-and-drop repositioning, and double-click to reset.
 *   **Multi-Line History Subtitle Scrolling**: Retains 0 to 2 lines of historical subtitles, fading and shrinking older lines upward to ensure you don't miss fast-paced speech.
 *   **100% Offline Privacy & Security**: All audio capture, speech recognition, translation, and rendering are done locally. No internet access is required, ensuring absolute privacy.
@@ -107,6 +108,47 @@ If running from **Source Code** (Cross-platform Mac/Windows):
 1. Go to YouTube or any video hosting site and play a video.
 2. Click the extension icon in your toolbar, and click **「啟動即時字幕」** (Start Subtitles).
 3. A Glassmorphism style floating subtitle window will pop up at the bottom of the page, showing real-time transcripts and translations.
+
+---
+
+## 🌐 Translation Engine Setup (Optional)
+
+**After the three steps above, captions already work.** The backend tries DeepSeek → Ollama → Google Translate in order and uses the first available engine. If neither of the first two is configured, it falls back to free Google Translate with no extra installation required.
+
+Neither engine below is bundled with the release package — install them only if you need the extra capability:
+
+### Option A: Install Ollama for fully offline translation (no network, maximum privacy)
+
+> **📌 Important: The Ollama application and the `qwen2.5:3b-instruct` model are NOT included in this project or the release package — you must install and download them yourself.**
+> The bundled `sherpa-onnx-sense-voice` (~228MB) and `silero_vad.onnx` handle *speech recognition* only, not translation.
+
+1. Go to the **[official Ollama download page](https://ollama.com/download)** and install the Windows / macOS / Linux build for your OS.
+   Once installed, Ollama runs in the system tray (a llama icon appears) and automatically serves at `http://localhost:11434`.
+2. Open a command prompt (Windows: press `Win + R`, type `cmd`; Mac: open Terminal) and pull the translation model (~**2GB**, roughly 3–15 minutes depending on bandwidth):
+   ```bash
+   ollama pull qwen2.5:3b-instruct
+   ```
+3. Verify the installation:
+   ```bash
+   ollama list
+   ```
+   If `qwen2.5:3b-instruct` appears in the list, you are set. You can also open `http://localhost:11434` in a browser — seeing `Ollama is running` confirms the service is up.
+4. Click the extension icon and confirm "Ollama Server URL" is `http://localhost:11434` and "Translation Model Name" is `qwen2.5:3b-instruct` (both are defaults and usually need no change).
+
+**Hardware guidance**: The 3B model needs roughly 4GB+ of RAM and runs smoothly on an ordinary office laptop. If you have a discrete GPU (8GB+ VRAM), run `ollama pull qwen2.5:7b-instruct` for better semantic quality and change "Translation Model Name" in the extension to `qwen2.5:7b-instruct`.
+
+**Note**: Keep Ollama running in the background while in use. If the backend detects that Ollama is not running, it automatically skips it and uses a fallback engine so that every caption does not have to wait for a connection timeout.
+
+### Option B: Apply for a DeepSeek cloud API key for the highest semantic quality (paid)
+
+1. Register and log in at the **[DeepSeek Open Platform](https://platform.deepseek.com/)**.
+2. Click **"Top up"** in the left menu to add credit (prepaid billing; a minimum top-up of US$1–5 lasts a very long time).
+3. Click **"API Keys" → "Create new API key"**, then copy the generated key starting with `sk-` (**it is shown only once**).
+4. Click the extension icon and paste it into the "DeepSeek API Key" field to enable it.
+
+**Billing**: DeepSeek has no monthly fee or subscription — you are charged purely by tokens used. This system uses the `deepseek-v4-flash` model by default, whose official list price per 1M tokens is $0.14 input ($0.0028 on cache hit) and $0.28 output. In practice, watching one hour of video costs roughly **US$0.01–0.03**, so a $2 top-up covers well over 100 hours. Peak hours (09:00–12:00 and 14:00–18:00 Beijing time daily) are billed at 2x. Check the **[official DeepSeek pricing page](https://api-docs.deepseek.com/quick_start/pricing)** for current rates.
+
+> **⚠️ Model name change**: The legacy names `deepseek-chat` and `deepseek-reasoner` were **retired on 24 July 2026**; the current names are `deepseek-v4-flash` and `deepseek-v4-pro`. If you are running an older backend build, please update it — otherwise cloud translation will fail and silently fall back to Google Translate.
 
 ---
 

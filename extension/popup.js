@@ -40,9 +40,13 @@ const i18n = {
     optTargetNone: '僅顯示原文',
     labelShowBilingual: '雙語對照模式 (Bilingual Mode)',
     titleOllama: '本機翻譯設定 (Ollama)',
+    noticeOllama: '⚠️ Ollama 需另行安裝，並自行下載 qwen2.5:3b-instruct 模型（約 2GB）。未安裝時系統會自動改用免費的 Google 翻譯，字幕仍可正常運作。',
+    linkOllamaGuide: '安裝教學 →',
     labelOllamaUrl: 'Ollama 伺服器網址',
     labelModelName: '翻譯模型名稱',
     titleDeepseek: '雲端翻譯備用 (選填)',
+    noticeDeepseek: '需自行至 DeepSeek 開放平台申請金鑰並儲值，屬使用者付費服務（用量計費，日常看片一般每月不到 1 美元）。留空即不啟用。',
+    linkDeepseekGuide: '申請教學 →',
     labelDeepseekKey: 'DeepSeek API 金鑰',
     titleAppearance: '字幕外觀設定',
     labelBgColor: '底框顏色',
@@ -83,9 +87,13 @@ const i18n = {
     optTargetNone: '仅显示原文',
     labelShowBilingual: '双语对照模式 (Bilingual Mode)',
     titleOllama: '本地翻译设置 (Ollama)',
+    noticeOllama: '⚠️ Ollama 需另行安装，并自行下载 qwen2.5:3b-instruct 模型（约 2GB）。未安装时系统会自动改用免费的 Google 翻译，字幕仍可正常运作。',
+    linkOllamaGuide: '安装教程 →',
     labelOllamaUrl: 'Ollama 服务器网址',
     labelModelName: '翻译模型名称',
     titleDeepseek: '云端翻译备用 (选填)',
+    noticeDeepseek: '需自行至 DeepSeek 开放平台申请密钥并充值，属用户付费服务（按用量计费，日常看片一般每月不到 1 美元）。留空即不启用。',
+    linkDeepseekGuide: '申请教程 →',
     labelDeepseekKey: 'DeepSeek API 密钥',
     titleAppearance: '字幕外观设置',
     labelBgColor: '底框颜色',
@@ -126,9 +134,13 @@ const i18n = {
     optTargetNone: 'Original Only',
     labelShowBilingual: 'Bilingual Mode',
     titleOllama: 'Local Translation (Ollama)',
+    noticeOllama: '⚠️ Ollama must be installed separately, along with the qwen2.5:3b-instruct model (~2GB). Without it, the system automatically falls back to free Google Translate and captions still work.',
+    linkOllamaGuide: 'Setup guide →',
     labelOllamaUrl: 'Ollama Server URL',
     labelModelName: 'Translation Model Name',
     titleDeepseek: 'Cloud Translation Backup (Optional)',
+    noticeDeepseek: 'Requires your own key and prepaid balance from the DeepSeek Open Platform — a paid, pay-per-use service (typically under US$1/month for casual viewing). Leave blank to disable.',
+    linkDeepseekGuide: 'How to apply →',
     labelDeepseekKey: 'DeepSeek API Key',
     titleAppearance: 'Subtitle Appearance',
     labelBgColor: 'Background Color',
@@ -169,9 +181,13 @@ const i18n = {
     optTargetNone: '原文のみ表示',
     labelShowBilingual: '二言語表示モード',
     titleOllama: 'ローカル翻訳設定 (Ollama)',
+    noticeOllama: '⚠️ Ollama は別途インストールが必要で、qwen2.5:3b-instruct モデル（約 2GB）もご自身でダウンロードしてください。未導入の場合は自動的に無料の Google 翻訳に切り替わり、字幕は正常に動作します。',
+    linkOllamaGuide: 'インストール手順 →',
     labelOllamaUrl: 'Ollama サーバー URL',
     labelModelName: '翻訳モデル名',
     titleDeepseek: 'クラウド翻訳バックアップ (任意)',
+    noticeDeepseek: 'DeepSeek オープンプラットフォームでキーの取得とチャージが必要な有料サービスです（従量課金。通常の視聴なら月 1 米ドル未満）。空欄なら無効です。',
+    linkDeepseekGuide: '申請手順 →',
     labelDeepseekKey: 'DeepSeek API キー',
     titleAppearance: '字幕外観設定',
     labelBgColor: '背景色',
@@ -212,9 +228,13 @@ const i18n = {
     optTargetNone: '원본만 표시',
     labelShowBilingual: '이중 언어 대조 모드',
     titleOllama: '로컬 번역 설정 (Ollama)',
+    noticeOllama: '⚠️ Ollama는 별도로 설치해야 하며, qwen2.5:3b-instruct 모델(약 2GB)도 직접 내려받아야 합니다. 설치하지 않으면 무료 Google 번역으로 자동 전환되어 자막은 정상 작동합니다.',
+    linkOllamaGuide: '설치 가이드 →',
     labelOllamaUrl: 'Ollama 서버 주소',
     labelModelName: '번역 모델 이름',
     titleDeepseek: '클라우드 번역 백업 (선택)',
+    noticeDeepseek: 'DeepSeek 오픈 플랫폼에서 직접 키를 발급받고 충전해야 하는 유료 서비스입니다(사용량 과금, 일반적인 시청은 월 1달러 미만). 비워 두면 사용하지 않습니다.',
+    linkDeepseekGuide: '신청 가이드 →',
     labelDeepseekKey: 'DeepSeek API 키',
     titleAppearance: '자막 모양 설정',
     labelBgColor: '배경 색상',
@@ -276,10 +296,14 @@ function applyLanguage(lang) {
   document.getElementById('label-show-bilingual').textContent = getTranslation(lang, 'labelShowBilingual');
   
   document.getElementById('title-ollama').textContent = getTranslation(lang, 'titleOllama');
+  document.getElementById('notice-ollama').textContent = getTranslation(lang, 'noticeOllama');
+  document.getElementById('link-ollama-guide').textContent = getTranslation(lang, 'linkOllamaGuide');
   document.querySelector('label[for="ollama-url"]').textContent = getTranslation(lang, 'labelOllamaUrl');
   document.querySelector('label[for="model-name"]').textContent = getTranslation(lang, 'labelModelName');
-  
+
   document.getElementById('title-deepseek').textContent = getTranslation(lang, 'titleDeepseek');
+  document.getElementById('notice-deepseek').textContent = getTranslation(lang, 'noticeDeepseek');
+  document.getElementById('link-deepseek-guide').textContent = getTranslation(lang, 'linkDeepseekGuide');
   document.querySelector('label[for="deepseek-key"]').textContent = getTranslation(lang, 'labelDeepseekKey');
   
   document.getElementById('title-appearance').textContent = getTranslation(lang, 'titleAppearance');

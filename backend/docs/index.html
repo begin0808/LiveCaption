@@ -1049,7 +1049,7 @@
             </svg>
           </div>
           <h3>自由切換翻譯引擎</h3>
-          <p>支援強大的本機 Ollama 推理框架（推薦使用 Qwen 2.5 3B 模型）進行全離線智能意譯；同時支援線上 DeepSeek 雲端 API，以極低的成本取得接近人工翻譯的語意品質。</p>
+          <p>內建免費的 Google 翻譯備援，安裝後即可直接使用；亦可自行安裝本機 Ollama 推理框架（推薦 Qwen 2.5 3B 模型）進行全離線智能意譯，或填入 DeepSeek 雲端金鑰取得接近人工翻譯的語意品質。<strong>※ Ollama 與 DeepSeek 皆需另行安裝或申請，詳見常見問題。</strong></p>
         </div>
 
         <!-- Feature 4 -->
@@ -1328,14 +1328,22 @@
             <span data-i18n="faq4-title">問題 4：如何申請與配置 DeepSeek 雲端翻譯金鑰 (API Key)？</span>
           </h4>
           <div class="faq-desc" data-i18n="faq4-desc">
-            使用 DeepSeek 雲端翻譯可以極低成本取得極精準的雙語對照。請依以下步驟申請：
+            <strong>DeepSeek 為選用的雲端付費服務，需自行申請金鑰。</strong>不填寫也完全不影響使用（系統會改用本機 Ollama 或免費 Google 翻譯）。若您想取得最精準的雙語對照，請依以下步驟申請：
             <ol>
               <li><strong>註冊/登入開發者平台</strong>：造訪 <a href="https://platform.deepseek.com/" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">DeepSeek 開放平台</a>。您可以透過手機註冊或 Google 帳號快速登入。</li>
-              <li><strong>帳戶充值 (Top Up)</strong>：進入後台後，點擊左側選單的 <strong>"Top up"</strong>。其 Token 價格極低，充值最低金額（如 1~5 美元）即可供日常影片翻譯使用極長時間。</li>
+              <li><strong>帳戶充值 (Top Up)</strong>：進入後台後，點擊左側選單的 <strong>"Top up"</strong>。DeepSeek 採「先儲值、後扣款」制，儲值最低金額（如 1~5 美元）即可供日常影片翻譯使用極長時間。</li>
               <li><strong>建立金鑰 (Create API Key)</strong>：點擊左側選單的 <strong>"API Keys"</strong>，然後點擊 <strong>"Create new API key"</strong>。輸入金鑰名稱並點擊確定。</li>
               <li><strong>複製金鑰</strong>：複製系統產生的以 <code>sk-</code> 開頭的金鑰。基於安全限制，該金鑰只會顯示一次，請務必當下複製保存。</li>
               <li><strong>配置到外掛</strong>：點擊 Chrome 的 LiveCaption 外掛圖示，在「DeepSeek API 金鑰」欄位貼上剛才複製的金鑰，即可自動啟用雲端翻譯。</li>
             </ol>
+            <strong>費用怎麼算？</strong>DeepSeek 沒有月費或訂閱制，完全依實際使用的 Token 量計費，用多少扣多少。本系統預設使用 <code>deepseek-v4-flash</code> 模型，官方牌價如下（單位：美元 / 每百萬 Token）：
+            <ul>
+              <li><strong>輸入（快取未命中）</strong>：$0.14　|　<strong>輸入（快取命中）</strong>：$0.0028　|　<strong>輸出</strong>：$0.28</li>
+              <li><strong>實際花費估算</strong>：字幕每句翻譯的文字量很短，觀看 1 小時影片大約僅消耗 <strong>0.01~0.03 美元</strong>（約新台幣 0.3~1 元）。也就是說儲值 <strong>2 美元大約可翻譯 100 小時以上</strong>的影片。</li>
+              <li><strong>尖峰時段加價</strong>：DeepSeek 公告將實施離峰/尖峰差別定價，尖峰時段（北京時間每日 09:00–12:00 與 14:00–18:00）費率為平常的 2 倍。</li>
+              <li><strong>模型代號異動（重要）</strong>：舊有的 <code>deepseek-chat</code> 與 <code>deepseek-reasoner</code> 代號已於 <strong>2026 年 7 月 24 日停用</strong>，現行代號為 <code>deepseek-v4-flash</code> 與 <code>deepseek-v4-pro</code>。若您使用的是舊版後端，請更新至最新版本，否則雲端翻譯會失敗並自動退回 Google 翻譯。</li>
+            </ul>
+            <small>※ 以上價格為本手冊更新時（2026 年 7 月）之官方牌價，實際費率請以 <a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">DeepSeek 官方定價頁</a> 公告為準。</small>
           </div>
         </div>
 
@@ -1414,6 +1422,47 @@
               <li><strong>Vivaldi 瀏覽器</strong>：前往 <code>vivaldi://extensions/</code>，開啟右上角「開發者模式」，點擊「載入已解壓縮擴充功能」，選取 <code>extension</code> 資料夾。</li>
             </ul>
             <small>※ 提示：在上述瀏覽器的網址列輸入 <code>chrome://extensions/</code> 也會自動跳轉至對應的擴充功能設定頁面。</small>
+          </div>
+        </div>
+        <!-- Q10 (Firefox Incompatibility) -->
+        <div class="faq-card">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span data-i18n="faq10-title">問題 10：Firefox 瀏覽器可以使用嗎？</span>
+          </h4>
+          <div class="faq-desc" data-i18n="faq10-desc">
+            <strong>很遺憾，Firefox 目前無法直接使用本系統的外掛。</strong>原因說明如下：
+            <ul>
+              <li><strong>引擎架構不同</strong>：Firefox 使用 Mozilla 自家的 <strong>Gecko 引擎</strong>，而非 Chromium 核心。本系統外掛依賴 Chrome 專屬的擴充功能 API（例如 <code>chrome.tabCapture</code>、<code>chrome.offscreen</code> 等），這些 API 在 Firefox 中完全不存在，也沒有對應的替代方案。</li>
+              <li><strong>Manifest 格式差異</strong>：本外掛採用 Chrome Manifest V3 規範，Firefox 雖然也開始支援 MV3，但在權限模型與背景腳本（Service Worker vs. Background Page）的實作上仍有顯著差異，導致無法直接移植。</li>
+              <li><strong>建議替代方案</strong>：若您習慣使用 Firefox，建議在需要即時字幕功能時，暫時改用 Google Chrome、Microsoft Edge 或其他 Chromium 核心瀏覽器（詳見問題 9）。</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Q11 (Ollama Installation) -->
+        <div class="faq-card">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span data-i18n="faq11-title">問題 11：如何安裝 Ollama 與下載 qwen2.5:3b-instruct 翻譯模型？</span>
+          </h4>
+          <div class="faq-desc" data-i18n="faq11-desc">
+            <strong>請注意：Ollama 與翻譯模型「並未」包含在本系統的發布包中，需要您另行安裝下載。</strong>發布包內建的 <code>sherpa-onnx-sense-voice</code> 與 <code>silero_vad.onnx</code> 只負責「語音辨識」，不負責翻譯。<br>
+            <strong>如果您不安裝 Ollama 也完全沒問題</strong>——系統會自動改用免費的 Google 翻譯，字幕依然正常顯示。只有在您需要「全離線、不連網」的翻譯時，才需要以下步驟：
+            <ol>
+              <li><strong>下載並安裝 Ollama 程式</strong>：造訪 <a href="https://ollama.com/download" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">Ollama 官方下載頁</a>，依作業系統選擇 Windows / macOS / Linux 版本並完成安裝。安裝後 Ollama 會常駐在系統列（工作列右下角出現羊駝圖示），並自動在 <code>http://localhost:11434</code> 提供服務。</li>
+              <li><strong>下載翻譯模型</strong>：開啟命令提示字元（Windows 按 <code>Win + R</code> 輸入 <code>cmd</code>；Mac 開啟「終端機」），輸入以下指令並按 Enter：
+                <div style="background:#0f172a; color:#e2e8f0; padding:10px 14px; border-radius:8px; margin:8px 0; font-family:Consolas,Monaco,monospace; font-size:14px; overflow-x:auto;">ollama pull qwen2.5:3b-instruct</div>
+                模型約 <strong>2GB</strong>，請確保網路順暢與磁碟空間充足，下載時間依網速約需 3~15 分鐘。
+              </li>
+              <li><strong>驗證安裝成功</strong>：下載完成後輸入 <code>ollama list</code>，若清單中出現 <code>qwen2.5:3b-instruct</code> 即代表成功。也可直接在瀏覽器開啟 <code>http://localhost:11434</code>，看到 <code>Ollama is running</code> 字樣即表示服務正常。</li>
+              <li><strong>確認外掛設定</strong>：點擊 LiveCaption 外掛圖示，確認「Ollama 伺服器網址」為 <code>http://localhost:11434</code>、「翻譯模型名稱」為 <code>qwen2.5:3b-instruct</code>（兩者皆為預設值，通常無須修改），即可啟用全離線翻譯。</li>
+            </ol>
+            <strong>硬體建議與模型選擇：</strong>
+            <ul>
+              <li><strong>3B 模型（推薦）</strong>：約需 4GB 以上記憶體，一般文書筆電即可流暢執行，是速度與品質的最佳平衡點。</li>
+              <li><strong>7B 模型</strong>：若您的電腦有獨立顯卡（8GB VRAM 以上），可改用 <code>ollama pull qwen2.5:7b-instruct</code> 取得更佳語意品質，並在外掛的「翻譯模型名稱」欄位改填 <code>qwen2.5:7b-instruct</code>。</li>
+              <li><strong>注意</strong>：使用 Ollama 時請務必讓 Ollama 保持在背景執行。若後端偵測到 Ollama 未啟動，會自動跳過並改用備援翻譯，以避免每句字幕都等待連線逾時而延遲。</li>
+            </ul>
           </div>
         </div>
       </div>

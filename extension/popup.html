@@ -85,6 +85,10 @@
     </div>
 
     <div class="section-title" id="title-ollama">本機翻譯設定 (Ollama)</div>
+    <p class="setting-notice">
+      <span id="notice-ollama">⚠️ Ollama 需另行安裝，並自行下載 qwen2.5:3b-instruct 模型（約 2GB）。未安裝時系統會自動改用免費的 Google 翻譯，字幕仍可正常運作。</span>
+      <a href="https://begin0808.github.io/LiveCaption/#troubleshooting" target="_blank" id="link-ollama-guide">安裝教學 →</a>
+    </p>
     <div class="input-group">
       <label for="ollama-url">Ollama 伺服器網址</label>
       <input type="text" id="ollama-url" value="http://localhost:11434" placeholder="http://localhost:11434">
@@ -96,6 +100,10 @@
     </div>
 
     <div class="section-title" id="title-deepseek">雲端翻譯備用 (選填)</div>
+    <p class="setting-notice setting-notice-info">
+      <span id="notice-deepseek">需自行至 DeepSeek 開放平台申請金鑰並儲值，屬使用者付費服務（用量計費，日常看片一般每月不到 1 美元）。留空即不啟用。</span>
+      <a href="https://begin0808.github.io/LiveCaption/#troubleshooting" target="_blank" id="link-deepseek-guide">申請教學 →</a>
+    </p>
     <div class="input-group">
       <label for="deepseek-key">DeepSeek API 金鑰</label>
       <input type="password" id="deepseek-key" placeholder="sk-...">

@@ -146,7 +146,8 @@ async def translate_text(text: str, target_lang: str, ollama_url: str, model_nam
                         "Content-Type": "application/json"
                     },
                     json={
-                        "model": "deepseek-chat",
+                        # 舊模型代號 deepseek-chat 已於 2026-07-24 停用，改用 V4-Flash
+                        "model": "deepseek-v4-flash",
                         "messages": [
                             {"role": "system", "content": f"你是一個專業的影片字幕即時翻譯官。請將輸入的影片語音字幕，翻譯成簡短流暢的{target_name}。請只輸出翻譯後的文字，不要包含任何解釋、引言或額外標記，保持字數與原句差不多。"},
                             {"role": "user", "content": text}

@@ -91,6 +91,30 @@ body {
   line-height: 1.4;
 }
 
+.setting-notice {
+  font-size: 10px;
+  color: #b45309;
+  background: rgba(251, 191, 36, 0.12);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin: 0 0 10px 0;
+  line-height: 1.5;
+}
+
+.setting-notice-info {
+  color: #0369a1;
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.28);
+}
+
+.setting-notice a {
+  color: inherit;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: underline;
+}
+
 .status-container {
   display: flex;
   flex-direction: column;
