@@ -1600,6 +1600,9 @@
               <li><strong>預熱模型</strong>：開啟命令提示字元，貼上以下指令並執行。它<strong>只把模型載入記憶體、不產生任何文字</strong>，因此很快就會完成（實測約 4.5 秒）：
                 <div class="cmd-box">curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d "{\"model\":\"qwen2.5:3b-instruct\",\"keep_alive\":-1}"</div>
                 其中 <code>keep_alive:-1</code> 是關鍵，代表「<strong>永遠不要釋放這個模型</strong>」，可繞過預設的 5 分鐘自動卸載。
+                <br><strong>※ 重要：上述指令僅適用於「命令提示字元 (CMD)」。</strong>在 PowerShell 中，<code>curl</code> 是 <code>Invoke-WebRequest</code> 的別名，無法接受這些參數而會直接報錯。若您慣用 PowerShell，或想要更簡短好記的寫法，請改用以下指令（<strong>CMD 與 PowerShell 皆適用</strong>）：
+                <div class="cmd-box">ollama run qwen2.5:3b-instruct "" --keepalive=24h</div>
+                此寫法會讓模型常駐 24 小時。請注意 CLI 的 <code>--keepalive</code> <strong>必須帶時間單位</strong>（例如 <code>24h</code>、<code>8h</code>），不接受 <code>-1</code>。
               </li>
               <li><strong>確認模型已常駐</strong>：執行以下指令，清單中必須出現 <code>qwen2.5:3b-instruct</code>；若清單是空的就代表預熱未成功：
                 <div class="cmd-box">ollama ps</div>
@@ -1615,6 +1618,49 @@
               <li><strong>完全結束 Ollama</strong>（系統列圖示按右鍵 → Quit），再重新啟動。</li>
             </ol>
             <small>※ 注意兩點：一、設定環境變數後<strong>仍需第一次請求把模型叫起來</strong>，最穩定的組合是「設定環境變數 + 開機後執行一次預熱指令」。二、模型常駐會<strong>持續佔用約 2GB 記憶體</strong>，若您的電腦記憶體吃緊或不常使用字幕功能，建議維持手動預熱即可。</small>
+          </div>
+        </div>
+        <!-- Q14 (Non-ASCII path breaks ASR) -->
+        <div class="faq-card">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span data-i18n="faq14-title">問題 14：外掛一直卡在「連線中...」、完全沒有字幕，後端出現 invalid unordered_map 錯誤？</span>
+          </h4>
+          <div class="faq-desc" data-i18n="faq14-desc">
+            <div class="alert-box"><strong>⚠️ 最常見原因：本系統資料夾的完整路徑中含有中文字（或其他非英文字元）。</strong>例如解壓縮到「<code>桌面\即時字幕</code>」、「<code>下載\分享會</code>」，或 Windows 使用者名稱本身是中文（<code>C:\Users\王小明\</code>）。</div>
+            典型症狀：
+            <ul>
+              <li>外掛面板的連線狀態<strong>永遠停在「連線中...」</strong>，擷取狀態卻顯示「擷取中」。</li>
+              <li>後端視窗不斷重複「連線 → 建立紀錄存檔 → 更新設定 → 錯誤 → 中斷連線」的迴圈。</li>
+              <li>錯誤訊息為 <code>WebSocket 發生錯誤: invalid unordered_map&lt;K, T&gt; key</code>。</li>
+              <li>影片明明有聲音，卻連一句字幕都沒有出現。</li>
+            </ul>
+            <strong>最容易被誤導的一點：</strong>後端在啟動時仍然會印出「<strong>所有離線 AI 模型載入成功！</strong>」，看起來一切正常。但這是<strong>假的成功訊息</strong>——問題要到第一句語音進來、真正開始解碼時才會爆發。
+            <br><br>
+            <strong>技術原因：</strong>兩個模型檔的讀取方式不同。
+            <div class="cmp-wrap">
+              <table class="cmp-table">
+                <thead>
+                  <tr><th>model.int8.onnx 路徑</th><th>tokens.txt 路徑</th><th>實測結果</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>純英數</td><td>純英數</td><td class="cmp-best">正常辨識</td></tr>
+                  <tr><td><strong>含中文</strong></td><td>純英數</td><td class="cmp-best">正常辨識</td></tr>
+                  <tr><td>純英數</td><td><strong>含中文</strong></td><td>invalid unordered_map 錯誤</td></tr>
+                  <tr><td><strong>含中文</strong></td><td><strong>含中文</strong></td><td>invalid unordered_map 錯誤</td></tr>
+                </tbody>
+              </table>
+            </div>
+            由上表可見，<strong>真正的關鍵是 <code>tokens.txt</code></strong>。<code>model.int8.onnx</code> 由 ONNX Runtime 以寬字元 (Unicode) API 載入，能正確處理中文路徑；但 <code>tokens.txt</code> 是由辨識引擎以窄字元路徑開啟，Windows 無法將中文字轉換成對應的 ANSI 編碼，導致<strong>開檔失敗且未被檢查</strong>。符號對照表因此是空的，直到解碼時查表才丟出 <code>invalid unordered_map</code> 錯誤。
+            <br><br>
+            <strong>解決方法：把整個資料夾移到不含中文字的路徑，然後重新啟動後端。</strong>
+            <ol>
+              <li><strong>建議路徑</strong>：例如 <code>D:\LiveCaption\</code> 或 <code>C:\LiveCaption\</code>，全部使用英文、數字、底線或減號。</li>
+              <li><strong>應避免</strong>：資料夾名稱含中文、日文、韓文、全形符號或表情符號。空白字元通常沒問題，但建議一併避免。</li>
+              <li><strong>特別注意使用者名稱</strong>：若您的 Windows 使用者名稱是中文，則<strong>桌面與下載資料夾的完整路徑都會含有中文</strong>（<code>C:\Users\王小明\Desktop\</code>）。此時務必把資料夾放到磁碟根目錄底下，例如 <code>D:\LiveCaption\</code>，不要放在桌面。</li>
+              <li><strong>如何確認</strong>：在檔案總管開啟該資料夾，點一下上方網址列，即可看到完整路徑；確認整條路徑從磁碟代號到最後一層都沒有中文字。</li>
+            </ol>
+            <small>※ 此問題與外掛、瀏覽器、模型檔本身皆無關，純粹由路徑字元造成。移動資料夾後不需要重新下載任何模型，也不需要重新安裝外掛。</small>
           </div>
         </div>
       </div>
