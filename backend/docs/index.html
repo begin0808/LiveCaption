@@ -736,6 +736,54 @@
       margin-bottom: 3px;
     }
 
+    /* Comparison table inside FAQ cards (horizontally scrollable on mobile) */
+    .cmp-wrap {
+      overflow-x: auto;
+      margin: 10px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .cmp-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 560px;
+      font-size: 12.5px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .cmp-table th, .cmp-table td {
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      padding: 7px 10px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .cmp-table thead th {
+      background: rgba(2, 132, 199, 0.08);
+      color: var(--accent-color);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .cmp-table tbody th {
+      background: rgba(148, 163, 184, 0.06);
+      color: var(--text-primary);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .cmp-table td {
+      color: var(--text-secondary);
+    }
+
+    .cmp-best {
+      color: #0284c7;
+      font-weight: 700;
+    }
+
     .alert-box {
       margin-top: 8px;
       padding: 10px 14px;
@@ -1463,6 +1511,46 @@
               <li><strong>7B 模型</strong>：若您的電腦有獨立顯卡（8GB VRAM 以上），可改用 <code>ollama pull qwen2.5:7b-instruct</code> 取得更佳語意品質，並在外掛的「翻譯模型名稱」欄位改填 <code>qwen2.5:7b-instruct</code>。</li>
               <li><strong>注意</strong>：使用 Ollama 時請務必讓 Ollama 保持在背景執行。若後端偵測到 Ollama 未啟動，會自動跳過並改用備援翻譯，以避免每句字幕都等待連線逾時而延遲。</li>
             </ul>
+          </div>
+        </div>
+        <!-- Q12 (Translation Engine Comparison) -->
+        <div class="faq-card">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span data-i18n="faq12-title">問題 12：DeepSeek、Ollama、Google 翻譯三者的翻譯品質差在哪？我該選哪一個？</span>
+          </h4>
+          <div class="faq-desc" data-i18n="faq12-desc">
+            先說明一個<strong>三者共通的架構限制</strong>：本系統為了追求低延遲，每一句字幕都是<strong>獨立送出翻譯、不夾帶前後文</strong>。因此不論使用哪個引擎，都無法根據上一句來判斷「他」指的是誰、或延續前面出現過的專有名詞譯法。這是速度與品質的取捨，並非引擎本身的缺陷。
+            <div class="cmp-wrap">
+              <table class="cmp-table">
+                <thead>
+                  <tr>
+                    <th>比較項目</th>
+                    <th>Google 翻譯（保底）</th>
+                    <th>Ollama qwen2.5:3b</th>
+                    <th>DeepSeek v4-flash</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th>語意品質</th><td>逐句直譯，忠實但生硬</td><td>會潤飾成通順口語</td><td class="cmp-best">最佳，接近人工翻譯</td></tr>
+                  <tr><th>成語／俚語</th><td>常直譯出錯</td><td>普通</td><td class="cmp-best">好</td></tr>
+                  <tr><th>中日文省略主詞</th><td>容易補錯</td><td>普通</td><td class="cmp-best">好</td></tr>
+                  <tr><th>專業術語</th><td>中上（字典龐大）</td><td>3B 偏弱，可能自行腦補</td><td class="cmp-best">好</td></tr>
+                  <tr><th>抗辨識錯字能力</th><td>差，錯字照翻</td><td>中，能推測原意</td><td class="cmp-best">好，能還原語意</td></tr>
+                  <tr><th>輸出穩定性</th><td class="cmp-best">極穩</td><td>小模型偶爾多輸出解釋文字</td><td>穩</td></tr>
+                  <tr><th>延遲</th><td class="cmp-best">100~300 毫秒</td><td>CPU 上約 0.5~3 秒（有逾時風險）</td><td>0.5~2 秒（視網路而定）</td></tr>
+                  <tr><th>隱私</th><td>字幕文字送往 Google</td><td class="cmp-best">完全不離開本機</td><td>字幕文字送往 DeepSeek</td></tr>
+                  <tr><th>成本</th><td class="cmp-best">免費</td><td class="cmp-best">免費（僅耗電）</td><td>約每小時 0.01~0.03 美元</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <strong>實務結論：</strong>
+            <ul>
+              <li><strong>DeepSeek 明顯最好</strong>，尤其當影片含有專業術語、成語，或語音辨識結果不夠乾淨時。它會先理解「這句在講什麼」再翻譯，而不是逐字對應。以每小時不到新台幣 1 元的成本而言，性價比很高。</li>
+              <li><strong>qwen2.5:3b 與 Google 翻譯其實互有勝負</strong>。3B 模型在「口語化、句子通順度」上占優，但在「專有名詞、數字、人名」上反而可能不如 Google，因為小模型容易自行腦補。要明顯拉開差距，建議升級至 7B 模型。</li>
+              <li><strong>一個容易被忽略的陷阱</strong>：三個引擎的連線逾時都設為 3 秒。若您的電腦沒有獨立顯卡、純以 CPU 執行 3B 模型，每句可能剛好卡在 2~4 秒而間歇性逾時；而且後端一旦偵測到逾時，<strong>該次工作階段後續將不再嘗試 Ollama</strong>，全部改走備援翻譯。您可能以為正在使用 Ollama，實際上早已退回 Google 翻譯。請查看後端視窗是否印出「偵測到本機 Ollama 未啟動」以確認。</li>
+            </ul>
+            <strong>選擇建議：</strong>追求翻譯品質請使用 DeepSeek；重視隱私（例如翻譯公司內部會議）請使用 Ollama 並盡量選用 7B 模型；其餘一般情況下，內建免費的 Google 翻譯已經足夠。
           </div>
         </div>
       </div>
