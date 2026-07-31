@@ -784,6 +784,21 @@
       font-weight: 700;
     }
 
+    /* Copy-ready command block */
+    .cmd-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin: 8px 0;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .alert-box {
       margin-top: 8px;
       padding: 10px 14px;
@@ -1551,6 +1566,55 @@
               <li><strong>一個容易被忽略的陷阱</strong>：三個引擎的連線逾時都設為 3 秒。若您的電腦沒有獨立顯卡、純以 CPU 執行 3B 模型，每句可能剛好卡在 2~4 秒而間歇性逾時；而且後端一旦偵測到逾時，<strong>該次工作階段後續將不再嘗試 Ollama</strong>，全部改走備援翻譯。您可能以為正在使用 Ollama，實際上早已退回 Google 翻譯。請查看後端視窗是否印出「偵測到本機 Ollama 未啟動」以確認。</li>
             </ul>
             <strong>選擇建議：</strong>追求翻譯品質請使用 DeepSeek；重視隱私（例如翻譯公司內部會議）請使用 Ollama 並盡量選用 7B 模型；其餘一般情況下，內建免費的 Google 翻譯已經足夠。
+          </div>
+        </div>
+        <!-- Q13 (Ollama cold start / warm-up) -->
+        <div class="faq-card">
+          <h4>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+            <span data-i18n="faq13-title">問題 13：Ollama 明明開著，後端卻顯示「偵測到本機 Ollama 未啟動」？</span>
+          </h4>
+          <div class="faq-desc" data-i18n="faq13-desc">
+            <strong>這個訊息會誤導人——實際上 Ollama 確實在執行，只是「來不及回應」。</strong>
+            <ul>
+              <li>Ollama 的模型並非常駐記憶體。預設的 <code>keep_alive</code> 是 <strong>5 分鐘</strong>，閒置超過就會自動從記憶體卸載。</li>
+              <li>您啟動 Ollama 後，通常還要開影片、設定外掛，這段時間早已超過 5 分鐘，模型其實不在記憶體中。</li>
+              <li>第一句字幕送達時，Ollama 必須先把約 2GB 的模型從硬碟載入記憶體，而本系統的連線逾時只有 <strong>3 秒</strong>，等不到就會判定失敗。</li>
+            </ul>
+            以下是實測數據（一般文書筆電、純 CPU 執行 qwen2.5:3b-instruct）：
+            <div class="cmp-wrap">
+              <table class="cmp-table">
+                <thead>
+                  <tr><th>階段</th><th>冷啟動（模型未載入）</th><th>熱啟動（模型已常駐）</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th>總耗時</th><td>48.87 秒</td><td class="cmp-best">0.65 秒</td></tr>
+                  <tr><th>模型載入</th><td>27.19 秒</td><td class="cmp-best">0.37 秒</td></tr>
+                  <tr><th>提示詞處理</th><td>20.38 秒</td><td class="cmp-best">0.20 秒</td></tr>
+                  <tr><th>產生翻譯</th><td>1.27 秒</td><td class="cmp-best">0.07 秒</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <strong>解決方式：使用前先「預熱」模型（無須修改任何程式）</strong>
+            <ol>
+              <li><strong>預熱模型</strong>：開啟命令提示字元，貼上以下指令並執行。它<strong>只把模型載入記憶體、不產生任何文字</strong>，因此很快就會完成（實測約 4.5 秒）：
+                <div class="cmd-box">curl -X POST http://localhost:11434/api/generate -H "Content-Type: application/json" -d "{\"model\":\"qwen2.5:3b-instruct\",\"keep_alive\":-1}"</div>
+                其中 <code>keep_alive:-1</code> 是關鍵，代表「<strong>永遠不要釋放這個模型</strong>」，可繞過預設的 5 分鐘自動卸載。
+              </li>
+              <li><strong>確認模型已常駐</strong>：執行以下指令，清單中必須出現 <code>qwen2.5:3b-instruct</code>；若清單是空的就代表預熱未成功：
+                <div class="cmd-box">ollama ps</div>
+              </li>
+              <li><strong>正常啟動後端與外掛</strong>：之後依照原本流程操作即可。預熱後實測翻譯耗時僅 <strong>0.96 秒</strong>，遠低於 3 秒逾時。</li>
+            </ol>
+            <strong>若後端已經印出過該警告，不必重開後端：</strong>後端在每次收到設定訊息時都會重新啟用 Ollama。因此只要<strong>先完成上述預熱，再到外掛面板隨意改動任何一個設定</strong>（例如把「字幕翻譯語言」切走再切回來），Ollama 就會重新生效。
+            <br><br>
+            <strong>一勞永逸的做法（設定環境變數，同樣不需改程式）：</strong>若不想每次手動預熱，可讓 Ollama 預設就不卸載模型：
+            <ol>
+              <li>Windows 搜尋「編輯系統環境變數」→ 點擊「環境變數」。</li>
+              <li>在「使用者變數」新增：變數名稱 <code>OLLAMA_KEEP_ALIVE</code>，變數值 <code>-1</code>。</li>
+              <li><strong>完全結束 Ollama</strong>（系統列圖示按右鍵 → Quit），再重新啟動。</li>
+            </ol>
+            <small>※ 注意兩點：一、設定環境變數後<strong>仍需第一次請求把模型叫起來</strong>，最穩定的組合是「設定環境變數 + 開機後執行一次預熱指令」。二、模型常駐會<strong>持續佔用約 2GB 記憶體</strong>，若您的電腦記憶體吃緊或不常使用字幕功能，建議維持手動預熱即可。</small>
           </div>
         </div>
       </div>
